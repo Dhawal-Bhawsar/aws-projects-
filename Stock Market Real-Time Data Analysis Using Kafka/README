@@ -1,5 +1,4 @@
-
-📈 **Real-Time Stock Market Data Engineering Project**
+📈 Real-Time Stock Market Data Engineering Project
 
 This project demonstrates a complete real-time data engineering pipeline using Apache Kafka, AWS S3, AWS Glue, and Athena. The use case involves streaming live stock market data and performing real-time ingestion, storage, and querying for analytics.
 

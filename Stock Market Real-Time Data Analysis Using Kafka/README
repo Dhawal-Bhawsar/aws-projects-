@@ -1,1 +1,141 @@
 
+📈 **Real-Time Stock Market Data Engineering Project**
+
+This project demonstrates a complete real-time data engineering pipeline using Apache Kafka, AWS S3, AWS Glue, and Athena. The use case involves streaming live stock market data and performing real-time ingestion, storage, and querying for analytics.
+
+🚀 Project Overview
+
+Objective:
+Stream real-time stock index data using Kafka and store it in AWS S3. Then use Glue to catalog the data and query it using Athena.
+
+Key Features:
+
+Real-time data ingestion using Kafka producer and consumer.
+
+Storage in S3 in an organized partitioned format.
+
+Automatic schema detection using AWS Glue Crawler.
+
+Serverless querying using Amazon Athena.
+
+📌 Architecture
+java
+Copy
+Edit
+Stock Index Data Source (CSV or API)
+        |
+        v
+Kafka Producer (Python)
+        |
+        v
+Kafka Broker (localhost or EC2)
+        |
+        v
+Kafka Consumer (Python)
+        |
+        v
+AWS S3 (Raw Bucket)
+        |
+        v
+AWS Glue Crawler -> Data Catalog
+        |
+        v
+Amazon Athena (SQL Queries)
+🧰 Technologies Used
+Component	Technology
+Language	Python
+Streaming	Apache Kafka
+Cloud Storage	AWS S3
+ETL Catalog	AWS Glue
+Query Engine	Amazon Athena
+Infrastructure	AWS EC2 (Kafka host)
+
+🗂️ Project Structure
+bash
+Copy
+Edit
+├── producer.py          # Kafka Producer that reads stock data and sends to Kafka topic
+├── consumer.py          # Kafka Consumer that reads from topic and writes to S3
+├── requirements.txt     # Python dependencies
+├── indexProcessed.csv   # Sample dataset used by producer
+├── README.md            # You're here!
+🧪 How It Works
+1. Kafka Setup
+Install Kafka locally or on an EC2 instance.
+
+Create a topic called stock_data.
+
+2. Producer (Python)
+Reads the CSV file (indexProcessed.csv).
+
+Streams each row as a JSON message to Kafka topic stock_data.
+
+3. Consumer (Python)
+Listens to stock_data topic.
+
+Writes the messages as .json files to an S3 bucket in a specific folder structure (e.g., by date).
+
+4. AWS Glue
+Glue Crawler scans the S3 bucket to infer schema and create a table in the Glue Data Catalog.
+
+5. Athena
+Queries the data using standard SQL via Athena.
+
+💾 Sample Athena Queries
+sql
+Copy
+Edit
+SELECT * FROM stock_data_table
+WHERE stock_index = 'NIFTY 50'
+AND date BETWEEN DATE '2024-01-01' AND DATE '2024-06-01'
+LIMIT 100;
+📂 Sample S3 Folder Structure
+sql
+Copy
+Edit
+s3://your-bucket-name/
+└── stock_data/
+    └── year=2025/
+        └── month=06/
+            └── day=24/
+                └── part-0000.json
+🧑‍💻 Requirements
+Python 3.8+
+
+Kafka and Zookeeper
+
+AWS CLI configured
+
+boto3
+
+AWS account with permissions for S3, Glue, Athena
+
+Install dependencies:
+
+bash
+Copy
+Edit
+pip install -r requirements.txt
+
+📈 Dataset
+The producer uses a sample file: indexProcessed.csv, which includes stock market indices like:
+
+NIFTY 50
+
+BANK NIFTY
+
+SENSEX
+(You can replace this with live data from APIs like Alpha Vantage, Yahoo Finance, etc.)
+
+
+🔐 Security Notes
+Do not hard-code AWS credentials. Use ~/.aws/credentials or environment variables.
+
+Validate data types and content before writing to S3.
+
+✅ Future Improvements
+Add support for real-time dashboards using Amazon QuickSight.
+
+Integrate with live market APIs for dynamic streaming.
+
+Convert JSON to Parquet for cost-effective querying.
